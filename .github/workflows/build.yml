@@ -1,0 +1,60 @@
+name: Build
+
+on:
+    pull_request:
+    push:
+
+jobs:
+  build_us:
+      name: "Build US (SLUS_203.88)"
+      runs-on: ubuntu-latest
+      container:
+          image: ghcr.io/karas84/decomp-images-fatal-frame-1:main
+          credentials:
+            username: ${{ github.actor }}
+            password: ${{ secrets.GHCR_TOKEN }}
+      steps:
+        - name: Checkout Repository
+          uses: actions/checkout@v4
+
+        - name: Extract data
+          run: make us-extract-data
+        
+        - name: Make asm
+          run: make us-make-asm
+        
+        - name: Configure
+          run: make us-configure
+        
+        - name: Build
+          run: make us-build
+        
+        - name: Objdiff Report
+          run: make us-report
+
+  build_eu:
+      name: "Build EU (SLES_508.21)"
+      runs-on: ubuntu-latest
+      container:
+          image: ghcr.io/karas84/decomp-images-fatal-frame-1:main
+          credentials:
+            username: ${{ github.actor }}
+            password: ${{ secrets.GHCR_TOKEN }}
+      steps:
+        - name: Checkout Repository
+          uses: actions/checkout@v4
+
+        - name: Extract data
+          run: make eu-extract-data
+        
+        - name: Make asm
+          run: make eu-make-asm
+        
+        - name: Configure
+          run: make eu-configure
+        
+        - name: Build
+          run: make eu-build
+        
+        - name: Objdiff Report
+          run: make eu-report
