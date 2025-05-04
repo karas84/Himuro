@@ -16,6 +16,12 @@ jobs:
       steps:
         - name: Checkout Repository
           uses: actions/checkout@v4
+        
+        - name: Extract assets
+          run: /assets/extract.sh
+        
+        - name: Install requirements
+          run: pip install -r requirements.txt
 
         - name: Extract data
           run: make us-extract-data
@@ -43,6 +49,9 @@ jobs:
       steps:
         - name: Checkout Repository
           uses: actions/checkout@v4
+        
+        - name: Extract assets
+          run: /assets/extract.sh
         
         - name: Install requirements
           run: pip install -r requirements.txt
