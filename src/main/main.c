@@ -47,7 +47,11 @@ void InitGameFirst()
     gra3dInitFirst();
     gra2dInitBG();
     MovieInitWrk();
+#ifdef BUILD_EU_VERSION
+    realtime_scene_flg = 1;
+#else
     realtime_scene_flg = 0;
+#endif
     sys_wrk.game_mode = GAME_MODE_INIT;
     outgame_wrk.mode = 0;
     outgame_wrk.mode_next = 4;
