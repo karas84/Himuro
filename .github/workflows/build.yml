@@ -43,6 +43,9 @@ jobs:
       steps:
         - name: Checkout Repository
           uses: actions/checkout@v4
+        
+        - name: Install requirements
+          run: pip install -r requirements.txt
 
         - name: Extract data
           run: make eu-extract-data
