@@ -19,6 +19,8 @@ jobs:
         
         - name: Extract assets
           run: /assets/extract.sh
+          env:
+            ASSET_KEY: ${{ secrets.ASSET_KEY }}
         
         - name: Install requirements
           run: pip install -r requirements.txt
@@ -52,7 +54,9 @@ jobs:
         
         - name: Extract assets
           run: /assets/extract.sh
-        
+          env:
+            ASSET_KEY: ${{ secrets.ASSET_KEY }}
+
         - name: Install requirements
           run: pip install -r requirements.txt
 
