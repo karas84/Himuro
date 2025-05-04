@@ -1,8 +1,8 @@
 name: Build
 
 on:
-    pull_request:
-    push:
+  push:
+  pull_request_target:
 
 jobs:
   build_us:
@@ -14,13 +14,23 @@ jobs:
             username: ${{ github.actor }}
             password: ${{ secrets.GHCR_TOKEN }}
       steps:
-        - name: Checkout Repository
+        - name: Clone Repository
           uses: actions/checkout@v4
-        
+          with:
+            persist-credentials: false
+            ref: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.base.ref || github.ref }}
+  
         - name: Extract assets
           run: /assets/extract.sh
           env:
             ASSET_KEY: ${{ secrets.ASSET_KEY }}
+
+        - name: Checkout PR commit
+          if: github.event_name == 'pull_request_target'
+          uses: actions/checkout@v4
+          with:
+            persist-credentials: false
+            ref: ${{ github.event.pull_request.head.ref }}
         
         - name: Install requirements
           run: pip install -r requirements.txt
@@ -49,13 +59,23 @@ jobs:
             username: ${{ github.actor }}
             password: ${{ secrets.GHCR_TOKEN }}
       steps:
-        - name: Checkout Repository
+        - name: Clone Repository
           uses: actions/checkout@v4
-        
+          with:
+            persist-credentials: false
+            ref: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.base.ref || github.ref }}
+  
         - name: Extract assets
           run: /assets/extract.sh
           env:
             ASSET_KEY: ${{ secrets.ASSET_KEY }}
+
+        - name: Checkout PR commit
+          if: github.event_name == 'pull_request_target'
+          uses: actions/checkout@v4
+          with:
+            persist-credentials: false
+            ref: ${{ github.event.pull_request.head.ref }}
 
         - name: Install requirements
           run: pip install -r requirements.txt
